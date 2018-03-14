@@ -34,18 +34,24 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
   if (dice !== 1) {
     //add score
     roundScore += dice;
-    scores[activePlayer] += dice;
+    //scores[activePlayer] += dice;
     document.getElementById('current-' + activePlayer).textContent = roundScore;
     //document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
 
   } else {
     // continue
-    roundScore = 0;
-    document.getElementById('current-' + activePlayer).textContent = roundScore;
+    document.getElementById('current-' + activePlayer).textContent = 0;
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-    document.getElementById('current-' + activePlayer).textContent = roundScore;
+    roundScore = 0;
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+
+    //document.getElementById('current-1' + activePlayer).textContent = 0;
+
   }
+
+
 });
 
-cument.querySelector('#current-' + activePlayer).innerHTML =  '<em>' + dice + '</em>';
+//document.querySelector('#current-' + activePlayer).innerHTML =  '<em>' + dice + '</em>';
 //document.querySelector('#current-' + activePlayer).textContent = dice;
