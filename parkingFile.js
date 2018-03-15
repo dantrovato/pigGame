@@ -57,18 +57,18 @@ function playRound() {
               document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
               document.getElementById('current-' + activePlayer).textContent = roundScore;
               console.log('first if');
-        } else if (dice === 6 && sixesCount > 0) {
-              // THIS ONE DOESN'T HAPPEN
+        } else if (dice === 6 && sixesCount !== 0) {
+              // PROBLEM CHILD
 
-              // sixesCount++;
-              // scores[activePlayer] = 0;
-              // roundScore = 0;
-              // document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-              // document.getElementById('current-' + activePlayer).textContent = roundScore;
-              // sixesCount = 0;
-              // nextPlayer();
+              sixesCount++;
+              scores[activePlayer] = 0;
+              roundScore = 0;
+              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+              document.getElementById('current-' + activePlayer).textContent = roundScore;
+              sixesCount = 0;
+              nextPlayer();
               console.log('FUCKING FINALLY!!!');
-        } else if (dice === 6 && sixesCount === 0) {
+        } else if (dice === 6 && sixesCount === 2) {
               sixesCount++;
               roundScore += dice;
               document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
@@ -95,7 +95,7 @@ init();
 document.querySelector('.btn-roll').addEventListener('click', function() {
     sixesCount = 0;
     if (gamePlaying && sixesCount < 2) {
-          playRound();
+        playRound();
     } else if (sixesCount === 2) {
           scores[activePlayer] = 0;
           document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
@@ -103,15 +103,15 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 });
 document.querySelector('.btn-hold').addEventListener('click', function() {
     if (gamePlaying) {
-      // add score to global score
-      scores[activePlayer] += roundScore;
-      // add score to top window
-      document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-      //reset current score to 0
-      document.getElementById('current-' + activePlayer).textContent = 0;
+        // add score to global score
+        scores[activePlayer] += roundScore;
+        // add score to top window
+        document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+        //reset current score to 0
+        document.getElementById('current-' + activePlayer).textContent = 0;
 
-      // check if player has hit 100
-      if (scores[activePlayer] >= 100) {
+        // check if player has hit 100
+        if (scores[activePlayer] >= 100) {
 
         document.getElementById('name-' + activePlayer).textContent = 'you win';
         document.querySelector('.dice').style.display = 'none';
@@ -119,8 +119,8 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         document.querySelector('.player-' + activePlayer +'-panel').classList.remove('active');
         gamePlaying = false;
       } else {
-        // change player?
-        nextPlayer();
+            // change player?
+            nextPlayer();
       }
     }
 
