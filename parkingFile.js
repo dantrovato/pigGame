@@ -1,5 +1,6 @@
 
 
+
 var scores, roundScore, activePlayer, gamePlaying, sixesCount;
 
 function init() {
@@ -55,28 +56,32 @@ function playRound() {
               roundScore += dice;
               document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
               document.getElementById('current-' + activePlayer).textContent = roundScore;
+              console.log('first if');
+        } else if (dice === 6 && sixesCount > 0) {
+              // THIS ONE DOESN'T HAPPEN
+
+              // sixesCount++;
+              // scores[activePlayer] = 0;
+              // roundScore = 0;
+              // document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+              // document.getElementById('current-' + activePlayer).textContent = roundScore;
+              // sixesCount = 0;
+              // nextPlayer();
+              console.log('FUCKING FINALLY!!!');
         } else if (dice === 6 && sixesCount === 0) {
               sixesCount++;
               roundScore += dice;
               document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
               document.getElementById('current-' + activePlayer).textContent = roundScore;
+              console.log('second else if');
 
-              // THIS ONE DOESN'T HAPPEN
-        } else if (dice === 6 && sixesCount === 1) {
-              sixesCount++;
-              scores[activePlayer] = 0;
-              roundScore = 0;
-              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-              document.getElementById('current-' + activePlayer).textContent = roundScore;
-              sixesCount = 0;
-              nextPlayer();
-              console.log('FEEEEECK');
         } else {
               scores[activePlayer] = 0;
               document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
               document.getElementById('current-' + activePlayer).textContent = 0;
               sixesCount = 0;
               nextPlayer();
+              console.log('else');
           }
 
 
