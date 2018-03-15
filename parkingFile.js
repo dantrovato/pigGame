@@ -1,4 +1,5 @@
 
+
 var scores, roundScore, activePlayer, gamePlaying, sixesCount;
 
 function init() {
@@ -35,39 +36,59 @@ function nextPlayer() {
     document.querySelector('.dice').style.display = 'none';
   }
 
+
+  //if (&& sixesCount < 2)
+
 function playRound() {
-    // 1. random number
-    var dice = Math.floor(Math.random() * 2) + 5;
-    // 2. display result
-    var diceDOM = document.querySelector('.dice');
-    diceDOM.style.display = 'block';
-    diceDOM.src = 'dice-' + dice + '.png';
+    if (gamePlaying){
+        // 1. random number
+        var dice = Math.floor(Math.random() * 2) + 5;
+        // 2. display result
+        var diceDOM = document.querySelector('.dice');
+        diceDOM.style.display = 'block';
+        diceDOM.src = 'dice-' + dice + '.png';
 
-    //3. update score if number higher than 1
-    if (dice !== 1) {
-      sixesCount = 0;
-      //add score
-      roundScore += dice;
-      document.getElementById('current-' + activePlayer).textContent = roundScore;
-      if (dice === 6) {
-        sixesCount++;
-        scores[activePlayer] = 0;
-        document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+        //3. update score if number higher than 1
+        if (dice !== 1 && dice !== 6) {
+              sixesCount = 0;
+              //add score
+              roundScore += dice;
+              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+              document.getElementById('current-' + activePlayer).textContent = roundScore;
+        } else if (dice === 6 && sixesCount === 0) {
+              sixesCount++;
+              roundScore += dice;
+              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+              document.getElementById('current-' + activePlayer).textContent = roundScore;
+
+              // THIS ONE DOESN'T HAPPEN
+        } else if (dice === 6 && sixesCount === 1) {
+              sixesCount++;
+              scores[activePlayer] = 0;
+              roundScore = 0;
+              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+              document.getElementById('current-' + activePlayer).textContent = roundScore;
+              sixesCount = 0;
+              nextPlayer();
+              console.log('FEEEEECK');
+        } else {
+              scores[activePlayer] = 0;
+              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+              document.getElementById('current-' + activePlayer).textContent = 0;
+              sixesCount = 0;
+              nextPlayer();
+          }
+
+
       }
-
-
-    } else {
-      sixesCount = 0;
-      // continue
-      nextPlayer();
-      //document.getElementById('current-1' + activePlayer).textContent = 0;
-    }
-    console.log(sixesCount);
+      console.log(sixesCount);
 }
+
 
 init();
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
+    sixesCount = 0;
     if (gamePlaying && sixesCount < 2) {
           playRound();
     } else if (sixesCount === 2) {
