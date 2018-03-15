@@ -51,42 +51,35 @@ function playRound() {
 
         //3. update score if number higher than 1
         if (dice !== 1 && dice !== 6) {
-              sixesCount = 0;
-              //add score
-              roundScore += dice;
-              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-              document.getElementById('current-' + activePlayer).textContent = roundScore;
-              console.log('first if');
-        } else if (dice === 6 && sixesCount !== 0) {
-              // PROBLEM CHILD
+            sixesCount = 0;
+            //add score
+            roundScore += dice;
+            document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+            document.getElementById('current-' + activePlayer).textContent = roundScore;
+            console.log('first if');
+        } else if (dice === 6) {
+            if (sixesCount === 0) {
+                sixesCount++;
+                roundScore += dice;
+                document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+                document.getElementById('current-' + activePlayer).textContent = roundScore;
+                console.log('this is the first 6');
+            } else {
 
+              // PROBLEM CHILD
               sixesCount++;
               scores[activePlayer] = 0;
               roundScore = 0;
               document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
               document.getElementById('current-' + activePlayer).textContent = roundScore;
-              sixesCount = 0;
+
               nextPlayer();
               console.log('FUCKING FINALLY!!!');
-        } else if (dice === 6 && sixesCount === 2) {
-              sixesCount++;
-              roundScore += dice;
-              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-              document.getElementById('current-' + activePlayer).textContent = roundScore;
-              console.log('second else if');
+            }
 
-        } else {
-              scores[activePlayer] = 0;
-              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-              document.getElementById('current-' + activePlayer).textContent = 0;
-              sixesCount = 0;
-              nextPlayer();
-              console.log('else');
-          }
-
-
-      }
-      console.log(sixesCount);
+        }
+    }
+  console.log(sixesCount);
 }
 
 
