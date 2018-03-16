@@ -34,6 +34,7 @@ function init() {
 }
 
 function nextPlayer() {
+    previousDice = 0;
     document.getElementById('current-' + activePlayer).textContent = 0;
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
     roundScore = 0;
@@ -74,7 +75,7 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
             scores[activePlayer] = 0;
             updateScore();
             nextPlayer();
-            previousDice = 0;
+
             console.log('BOOM. you hit the second 6');
         } else if (previousDice === 6) {
             previousDice = dice;
@@ -84,6 +85,21 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         }
     }
 });
+
+/*
+//3. update score if number higher than 1
+        if (dice !== 1 && !(dice == 6 && previousDice == 6)) {
+            //add score
+            previousDice = dice;
+            roundScore += dice;
+            updateScore();
+        } else if (dice === 1) {
+            nextPlayer();
+        } else if (dice === 6 && previousDice === 6) {
+            scores[activePlayer] = 0;
+            nextPlayer();
+        }
+*/
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
     if (gamePlaying) {
