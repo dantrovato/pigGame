@@ -8,7 +8,7 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, roundScore, activePlayer, gamePlaying, sixesCount;
+var scores, roundScore, activePlayer, gamePlaying, sixesCount, previousDice;
 
 function init() {
     scores = [0,0];
@@ -43,7 +43,7 @@ function nextPlayer() {
     document.querySelector('.dice').style.display = 'none';
   }
 
-  function updateScore() {
+function updateScore() {
     document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
     document.getElementById('current-' + activePlayer).textContent = roundScore;
   }
@@ -60,37 +60,31 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         diceDOM.src = 'dice-' + dice + '.png';
 
         //3. update score if number higher than 1
-        if (dice !== 1 && dice !== 6) {
-            sixesCount = 0;
+        if (dice !== 1 && previousDice !== 6) {
             //add score
+            previousDice = dice;
             roundScore += dice;
             updateScore();
-            console.log('this is a 2 to 5');
-        } else if (dice === 6 && sixesCount === 0) {
-            sixesCount++;
-            roundScore += dice;
-            updateScore();
-            console.log('this is the first 6');
-        } else if (dice === 6 && sixesCount === 1) {
-            sixesCount++;
-            scores[activePlayer] = 0;
-            roundScore = 0;
-            updateScore();
-            nextPlayer();
-            console.log('this is the second 6');
-            sixesCount = 0;
+            console.log('previous dice :' + previousDice);
         } else if (dice === 1) {
+            previousDice = dice;
             console.log('this is 1')
             nextPlayer();
+        } else if (dice === 6 && previousDice === 6) {
+            scores[activePlayer] = 0;
+            updateScore();
+            nextPlayer();
+            previousDice = 0;
+            console.log('BOOM. you hit the second 6');
         }
-        console.log('sixesCount: ' + sixesCount);
+
     }
 
 });
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
     if (gamePlaying) {
-      sixesCount = 0;
+      previousDice = 0;
       // add score to global score
       scores[activePlayer] += roundScore;
       // add score to top window
@@ -110,10 +104,9 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         // change player?
         nextPlayer();
       }
-      console.log('sixesCount: ' + sixesCount);
+
     }
 });
-console.log('sixesCount: ' + sixesCount);
 document.querySelector('.btn-new').addEventListener('click', init);
 
 
