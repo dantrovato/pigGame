@@ -53,7 +53,7 @@ init();
 document.querySelector('.btn-roll').addEventListener('click', function() {
     if (gamePlaying) {
         // 1. random number
-        var dice = Math.floor(Math.random() * 6) + 1;
+        var dice = Math.floor(Math.random() * 3) + 4;
         // 2. display result
         var diceDOM = document.querySelector('.dice');
         diceDOM.style.display = 'block';
@@ -76,10 +76,13 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
             nextPlayer();
             previousDice = 0;
             console.log('BOOM. you hit the second 6');
+        } else if (previousDice === 6) {
+            previousDice = dice;
+            roundScore += dice;
+            updateScore();
+            console.log('previous dice :' + previousDice);
         }
-
     }
-
 });
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
