@@ -43,12 +43,17 @@ function nextPlayer() {
     document.querySelector('.dice').style.display = 'none';
   }
 
+  function updateScore() {
+    document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+    document.getElementById('current-' + activePlayer).textContent = roundScore;
+  }
+
 init();
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
     if (gamePlaying) {
         // 1. random number
-        var dice = Math.floor(Math.random() * 2) + 5;
+        var dice = Math.floor(Math.random() * 6) + 1;
         // 2. display result
         var diceDOM = document.querySelector('.dice');
         diceDOM.style.display = 'block';
@@ -59,31 +64,30 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
             sixesCount = 0;
             //add score
             roundScore += dice;
-            document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-            document.getElementById('current-' + activePlayer).textContent = roundScore;
-            console.log('this is a 5');
-        } else if (dice === 6) {
-            if (sixesCount === 0) {
-                sixesCount++;
-                roundScore += dice;
-                document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-                document.getElementById('current-' + activePlayer).textContent = roundScore;
-                console.log('this is the first 6');
-            } else {
-              sixesCount++;
-              scores[activePlayer] = 0;
-              roundScore = 0;
-              document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-              document.getElementById('current-' + activePlayer).textContent = roundScore;
-
-              nextPlayer();
-              console.log('this is the second 6');
-              sixesCount = 0;
-            }
+            updateScore();
+            console.log('this is a 2 to 5');
+        } else if (dice === 6 && sixesCount === 0) {
+            sixesCount++;
+            roundScore += dice;
+            updateScore();
+            console.log('this is the first 6');
+        } else if (dice === 6 && sixesCount === 1) {
+            sixesCount++;
+            scores[activePlayer] = 0;
+            roundScore = 0;
+            updateScore();
+            nextPlayer();
+            console.log('this is the second 6');
+            sixesCount = 0;
+        } else if (dice === 1) {
+            console.log('this is 1')
+            nextPlayer();
         }
         console.log('sixesCount: ' + sixesCount);
     }
+
 });
+
 document.querySelector('.btn-hold').addEventListener('click', function() {
     if (gamePlaying) {
       sixesCount = 0;
@@ -106,11 +110,10 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         // change player?
         nextPlayer();
       }
+      console.log('sixesCount: ' + sixesCount);
     }
-
-
 });
-
+console.log('sixesCount: ' + sixesCount);
 document.querySelector('.btn-new').addEventListener('click', init);
 
 
