@@ -45,8 +45,6 @@ body {
     padding: 100px;
 }
 
-
-
 /**********************************************
 *** PLAYERS
 **********************************************/
@@ -80,7 +78,6 @@ body {
     color: #EB4D4D;
     top: -7px;
     right: 10px;
-
 }
 
 .player-current-box {
@@ -147,7 +144,34 @@ i {
  .btn-roll:Hover {
    background-color: firebrick;
  }
-.btn-hold { top: 467px;}
+
+.btn-target, {
+  border: 1px solid maroon;
+  border-radius: 5px;
+  margin-top: 25rem;
+}
+
+.btn-setScore {
+  border: 1px solid maroon;
+  border-radius: 5px;
+  margin-top: 22rem;
+}
+
+.btn-hold {
+  top: 467px;
+  border: 1px solid maroon;
+  border-radius: 5px;
+}
+
+.btn-hold:Hover, .btn-setScore:Hover, .btn-start:Hover {
+  background-color: firebrick;
+}
+
+.btn-start {
+  border: 1px solid maroon;
+  border-radius: 5px;
+  margin-top: 32rem;
+}
 
 .dice {
     position: absolute;
