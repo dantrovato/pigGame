@@ -62,18 +62,30 @@ function declareWinner() {
   gamePlaying = false;
 }
 
+function setGame() {
+    scorePrompt = prompt('Enter the winning score and your bank details');
+    var parseScore = parseInt(scorePrompt);
+
+    if (parseScore.toString() === scorePrompt) {
+        targetScore = scorePrompt;
+        document.querySelector('.btn-roll').style.display = 'none';
+        document.querySelector('.btn-hold').style.display = 'none';
+        document.querySelector('.btn-setScore').textContent = 'target: ' + scorePrompt + ' points';
+        document.querySelector('.btn-setScore').style.top = '-3rem';
+        document.querySelector('.btn-start').style.display = 'block'
+
+    } else {
+        document.querySelector('.btn-roll').style.display = 'none';
+        document.querySelector('.btn-hold').style.display = 'none';
+        document.querySelector('.btn-start').style.display = 'none'
+        alert('enter a valid number');
+    }
+}
+
 // CODE STARTS
 
-document.querySelector('.btn-setScore').addEventListener('click', function() {
-    scorePrompt = prompt('Enter the winning score and your bank details');
-    targetScore = scorePrompt;
-    document.querySelector('.btn-roll').style.display = 'none';
-    document.querySelector('.btn-hold').style.display = 'none';
-    document.querySelector('.btn-setScore').textContent = 'target: ' + scorePrompt + ' points';
-    document.querySelector('.btn-setScore').style.top = '-3rem';
-    document.querySelector('.btn-start').style.display = 'block'
-});
-
+document.querySelector('.btn-setScore').addEventListener('click', setGame);
+document.querySelector('.btn-new').addEventListener('click', setGame);
 
 //  GAME BEGINS
 document.querySelector('.dice').style.display = 'none';
@@ -91,8 +103,7 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         diceDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
 
-        // FIX MEEEEEEEEEE
-        //DOESN'T declareWinner WHEN TARGET IS HIT
+
         if ((scores[activePlayer] + roundScore) >= targetScore) {
 
             console.log('you win');
@@ -148,10 +159,4 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
       }
 
     }
-});
-
-document.querySelector('.btn-new').addEventListener('click', function() {
-  document.querySelector('.btn-roll').style.display = 'none';
-  document.querySelector('.btn-hold').style.display = 'none';
-  document.querySelector('.btn-start').style.display = 'block'
 });
