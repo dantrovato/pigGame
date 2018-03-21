@@ -8,7 +8,7 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, roundScore, activePlayer, gamePlaying, previousDice, scorePrompt, targetScore;
+var scores, roundScore, activePlayer, gamePlaying, previousDice, previousDice2, scorePrompt, targetScore;
 
 function init() {
     scores = [0,0];
@@ -17,8 +17,10 @@ function init() {
     gamePlaying = true;
     targetScore = scorePrompt;
     previousDice = 0;
+    previousDice2 = 0;
 
     document.querySelector('.dice').style.display = 'none';
+    document.querySelector('.dice2').style.display = 'none';
     document.getElementById('score-0').textContent = '0';
     document.getElementById('score-1').textContent = '0';
     document.getElementById('current-0').textContent = '0';
@@ -40,13 +42,16 @@ function init() {
 }
 
 function nextPlayer() {
+    //updateScore();
     previousDice = 0;
+    previousDice2 = 0;
     document.getElementById('current-' + activePlayer).textContent = 0;
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
     roundScore = 0;
     document.querySelector('.player-0-panel').classList.toggle('active');
     document.querySelector('.player-1-panel').classList.toggle('active');
     document.querySelector('.dice').style.display = 'none';
+    document.querySelector('.dice2').style.display = 'none';
   }
 
 function updateScore() {
@@ -57,6 +62,7 @@ function updateScore() {
 function declareWinner() {
   document.getElementById('name-' + activePlayer).textContent = 'you win';
   document.querySelector('.dice').style.display = 'none';
+  document.querySelector('.dice2').style.display = 'none';
   document.querySelector('.player-' + activePlayer +'-panel').classList.add('winner');
   document.querySelector('.player-' + activePlayer +'-panel').classList.remove('active');
   gamePlaying = false;
@@ -89,19 +95,26 @@ document.querySelector('.btn-new').addEventListener('click', setGame);
 
 //  GAME BEGINS
 document.querySelector('.dice').style.display = 'none';
+document.querySelector('.dice2').style.display = 'none';
 document.querySelector('.btn-roll').style.display = 'none';
 document.querySelector('.btn-hold').style.display = 'none';
 document.querySelector('.btn-start').style.display = 'none';
+
 document.querySelector('.btn-start').addEventListener('click', init);
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
     if (gamePlaying) {
         // 1. random number
         var dice = Math.floor(Math.random() * 6) + 1;
+        var dice2 = Math.floor(Math.random() * 6) + 1;
         // 2. display result
         var diceDOM = document.querySelector('.dice');
         diceDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
+
+        var diceDOM2 = document.querySelector('.dice2');
+        diceDOM2.style.display = 'block';
+        diceDOM2.src = 'dice-' + dice2 + '.png';
 
 
         if ((scores[activePlayer] + roundScore) >= targetScore) {
@@ -110,33 +123,40 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
             declareWinner();
 
             //3. update score if number higher than 1
-        } else if (dice !== 1 && previousDice !== 6) {
+        } else if (dice !== 1 && previousDice !== 6 && dice2 !== 1 && previousDice2 !== 6) {
             //add score
             previousDice = dice;
-            roundScore += dice;
-            updateScore();
-            console.log('previous dice :' + previousDice);
-            if ((scores[activePlayer] + roundScore) >= targetScore) {
-              declareWinner();
-            }
-        } else if (dice === 1) {
+            previousDice2 = dice2;
+            roundScore += (dice + dice2);
+            document.getElementById('current-' + activePlayer).textContent = roundScore;
+            console.log('previous dice :' + previousDice + ' and ' + previousDice2);
+            //updateScore();
+
+        } else if (dice === 1 || dice2 === 1) {
             previousDice = dice;
-            console.log('this is 1')
-            updateScore();
-            nextPlayer();
-        } else if (dice === 6 && previousDice === 6) {
-            scores[activePlayer] = 0;
-            updateScore();
+            previousDice2 = dice2;
+            console.log('previous dice :' + previousDice + ' and ' + previousDice2);
+            roundScore = 0;
+            document.getElementById('score-' + activePlayer).textContent = scores[activePlayer] + roundScore;
+            console.log('you hit a one');
+            //updateScore();
             nextPlayer();
 
+        } else if ((dice === 6 || dice2 === 6) && (previousDice === 6 || previousDice2 === 6)) {
+            document.getElementById('score-' + activePlayer).textContent = scores[activePlayer] = 0;
+            //updateScore();
+            nextPlayer();
             console.log('BOOM. you hit the second 6');
-        } else if (previousDice === 6) {
+
+        } else if (previousDice === 6 || previousDice2 === 6) {
             previousDice = dice;
-            roundScore += dice;
+            previousDice2 = dice2;
+            roundScore += (dice + dice2);
             updateScore();
-            console.log('previous dice :' + previousDice);
+            console.log('previous dice :' + (previousDice + previousDice2));
         }
     }
+    //updateScore();
 });
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
@@ -147,7 +167,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
       // add score to top window
       document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
       //reset current score to 0
-      document.getElementById('current-' + activePlayer).textContent = 0;
+      //document.getElementById('current-' + activePlayer).textContent = 0;
 
       // check if player has hit target
       if (scores[activePlayer] >= targetScore) {
